@@ -140,25 +140,25 @@ export default function Home() {
 
 	return (
 		<>
-			<div className={styles.header}>Gateway to Raspberry Pi 3A+</div>
+			<div className='background-circle'></div>
+			<div className='background-square'></div>
 			<div className={styles.gridContainer}>
 				<Gateway gatewayData={gatewayData} conn={conn} />
 				{conn ? (
-					<Board boardData={boardData} statusData={statusData} />
+					<div className={styles.boardContainer}>
+						<Board boardData={boardData} statusData={statusData} />
+						<div className={styles.terminalContainer}>
+							<Cmd cmdData={cmdData} />
+						</div>
+					</div>
 				) : (
-					<div className={styles.gatewayNotConnected}>
-						•Not Connected to the Gateway!
+					<div className={styles.instructions}>
+						<span>• Check if your pi is connected to a network.</span>
+						<span>• Replug the power supply of Pi.</span>
+						<span>• Contact Technical Support.</span>
 					</div>
 				)}
 			</div>
-
-			{conn ? (
-				<div className={styles.terminalContainer}>
-					<Cmd cmdData={cmdData} />
-				</div>
-			) : (
-				<div></div>
-			)}
 		</>
 	);
 }

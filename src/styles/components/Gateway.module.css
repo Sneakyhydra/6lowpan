@@ -1,46 +1,56 @@
 .gridContainer {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    grid-template-rows: 1fr;
-    grid-gap: 10px;
-    padding: 10px;
-    height: 100%;
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	height: 100%;
+	border-bottom: 2px solid #eaeaea;
+}
+
+.piSection {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	gap: 3rem;
+	padding-left: 4.75rem;
 }
 
 .imageContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .imageContainer > img {
-    /* border: 1px solid red; */
-    margin-bottom: 0.5rem;
-    background: transparent;
-    background-color: transparent;
+	background: transparent;
+	background-color: transparent;
 }
 
 .imageTag {
-    text-align: center;
-}
-
-.dataContainer {
-
+	text-align: center;
+	transform: translateY(-1.5rem);
 }
 
 .indivDataContainer {
-    width: 100%;
-    margin: 1.2rem;
-    display: flex;
-    flex-direction: column;
+	width: 100%;
+	margin: 1.2rem;
+	display: flex;
+	flex-direction: column;
 }
 
 .indivDataTitle {
-    font-size: 1rem;
+	font-size: 1rem;
 }
 
 .indivData {
-    font-size: 0.8rem;
+	font-size: 0.8rem;
+}
+
+.gatewayNotConnected {
+	color: #f32013;
+	font-size: 1.8rem;
+	font-weight: 600;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }

@@ -1,10 +1,86 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap');
 
+/* Hide the default scrollbar */
+::-webkit-scrollbar {
+	width: 8px;
+	background-color: #f5f5f5;
+	border-radius: 0.5rem;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background-color: #f5f5f5;
+	border-radius: 0.5rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background-color: #888;
+	border-radius: 0.5rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background-color: #555;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
 body {
-    background-color: #333;
-    color: #fff;
-    font-family: 'Roboto Mono', monospace;
-    padding: 0;
-    margin: 0;
-    
+	background: linear-gradient(135deg, #11181f 0%, #24313b 100%);
+	color: #fff;
+	font-family: 'Roboto Mono', sans-serif;
+	overflow: hidden;
+	height: 100vh;
+	width: 100vw;
+}
+
+body > div {
+	height: 100vh;
+}
+
+.background-circle {
+	position: absolute;
+	width: 800px;
+	height: 800px;
+	border-radius: 50%;
+	background: radial-gradient(circle, #1f2c35 20%, #11181f 60%);
+	top: -400px;
+	left: -400px;
+	z-index: -1;
+	animation: rotate 60s linear infinite;
+}
+
+.background-square {
+	position: absolute;
+	width: 500px;
+	height: 500px;
+	border-radius: 20%;
+	background: rgba(255, 255, 255, 0.1);
+	top: -250px;
+	right: -250px;
+	z-index: -1;
+	animation: rotate-reverse 80s linear infinite;
+}
+
+@keyframes rotate {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes rotate-reverse {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(-360deg);
+	}
 }
