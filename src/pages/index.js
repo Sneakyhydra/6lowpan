@@ -6,6 +6,7 @@ import styles from '../styles/index.module.css';
 
 import Gateway from '@/components/Gateway';
 import Board from '@/components/Board';
+import Cmd from '@/components/Cmd';
 
 const firebaseConfig = {
 	apiKey: 'AIzaSyAN5AxEKvhLV7Oe1DaqR4f-8q3O01d3e94',
@@ -23,7 +24,7 @@ export default function Home() {
 	const [boardData, setBoardData] = useState({
 		'cpu-on-time': 0,
 		'deep-lpm': 0,
-		'lpm': 0,
+		lpm: 0,
 		'radio-listen': 0,
 		'radio-off': 0,
 		'radio-transmit': 0,
@@ -31,36 +32,37 @@ export default function Home() {
 	});
 	const [cmdData, setCmdData] = useState('');
 	const [statusData, setStatusData] = useState({
-		'connected': 0,
-		'data': {
-			'baudrate': 0,
-			'device': '',
-			'port': '',
+		connected: 0,
+		data: {
+			baudrate: 0,
+			device: '',
+			port: '',
 		},
 	});
 	const [gatewayData, setGatewayData] = useState({
 		'cpu-thermal': {
-			'crit': 0.0,
-			'curr': 0.0,
-			'high': 0.0,
+			crit: 0.0,
+			curr: 0.0,
+			high: 0.0,
 		},
-		'disk': {
-			'percent': 0.0,
-			'used': 0.0,
-			'total': 0.0,
+		disk: {
+			percent: 0.0,
+			used: 0.0,
+			total: 0.0,
 		},
-		'mem': {
-			'percent': 0.0,
-			'used': 0.0,
-			'total': 0.0,
+		mem: {
+			percent: 0.0,
+			used: 0.0,
+			total: 0.0,
 		},
 		'cpu-usage': 0.0,
 	});
 	const [gatewayStatus, setGatewayStatus] = useState({
-		'connected': 0,
+		connected: 0,
 		'last-ping': '',
 	});
 
+	const [conn, setConn] = useState(false);
 
 	useEffect(() => {
 		// Initialize Firebase
@@ -76,68 +78,80 @@ export default function Home() {
 		onValue(boardDataRef, (snapshot) => {
 			const temp = snapshot.val();
 			setBoardData(temp);
-			console.log("Board Data: ", boardData);
+			console.log('Board Data: ', temp);
 		});
-		
+
 		onValue(cmdDataRef, (snapshot) => {
 			const temp = snapshot.val();
 			setCmdData(temp);
-			console.log("Cmd: ", cmdData);
+			console.log('Cmd: ', temp);
 		});
-		
+
 		onValue(statusRef, (snapshot) => {
 			const temp = snapshot.val();
 			setStatusData(temp);
-			console.log("Status: ", statusData);
+			console.log('Status: ', temp);
 		});
 
 		onValue(gatewayDataRef, (snapshot) => {
 			const temp = snapshot.val();
 			setGatewayData(temp);
-			console.log("Gateway Data: ", gatewayData);
+			console.log('Gateway Data: ', temp);
 		});
 
 		onValue(gatewayStatusRef, (snapshot) => {
 			const temp = snapshot.val();
 			setGatewayStatus(temp);
-			console.log("Gateway Status: ", gatewayStatus);
+			console.log('Gateway Status: ', gatewayStatus);
 		});
+		// eslint-disable-next-line
 	}, []);
 
+	setInterval(() => {
+		isGateWayConnected();
+	}, 3000);
 
 	const isGateWayConnected = () => {
 		// if time.now() - gatewayStatus['last-ping'] > 10 seconds then false else true
 		const currDateTime = new Date();
-		const lastPingDateTime = new Date(gatewayStatus['last-ping']);
+		const inputDate = gatewayStatus['last-ping'];
+		const lastPingDateTime = new Date(inputDate);
 		const diff = currDateTime - lastPingDateTime;
 		const diffSeconds = diff / 1000;
-		console.log("Curr: ", currDateTime);
-		console.log("Last Ping: ", lastPingDateTime);
-		console.log("Diff: ", diffSeconds);
 		if (diffSeconds > 10) {
+			if (conn) {
+				setConn(false);
+			}
 			return false;
 		} else {
+			if (!conn) {
+				setConn(true);
+			}
 			return true;
 		}
-		return false;
-	}
+	};
 
 	return (
 		<>
-			<div className={styles.header}>Gateway to Raspberry Pi 3</div>
-			{/* <BoardData boardData={boardData} />
-			<StatusData statusData={statusData} /> */}
-
+			<div className={styles.header}>Gateway to Raspberry Pi 3A+</div>
 			<div className={styles.gridContainer}>
-				<Gateway gatewayData={gatewayData} gatewayStatus={gatewayStatus} />
-				{isGateWayConnected() ?
-				<Board boardData={boardData} statusData={statusData} /> :
-				<div className={styles.gatewayNotConnected}>•Not Connected to the Gateway!</div>}
+				<Gateway gatewayData={gatewayData} conn={conn} />
+				{conn ? (
+					<Board boardData={boardData} statusData={statusData} />
+				) : (
+					<div className={styles.gatewayNotConnected}>
+						•Not Connected to the Gateway!
+					</div>
+				)}
 			</div>
 
-			<div className={styles.terminalContainer}>
-
-			</div>
+			{conn ? (
+				<div className={styles.terminalContainer}>
+					<Cmd cmdData={cmdData} />
+				</div>
+			) : (
+				<div></div>
+			)}
 		</>
 	);
 }

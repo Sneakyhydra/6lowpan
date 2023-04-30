@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "../styles/components/BoardData.module.css";
 
-const BoardData = ({boardData}) => {
+const BoardData = ({ boardData }) => {
   return (
     <div className={styles.boardData}>
       <div className={styles.gridRow4}>
