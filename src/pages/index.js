@@ -20,6 +20,8 @@ const firebaseConfig = {
 		'https://lowpan-6c3a4-default-rtdb.asia-southeast1.firebasedatabase.app/',
 };
 
+const FIVE_SECONDS = 5000;
+
 export default function Home() {
 	const [boardData, setBoardData] = useState({
 		'cpu-on-time': 0,
@@ -74,6 +76,7 @@ export default function Home() {
 		const statusRef = ref(db, 'status');
 		const gatewayDataRef = ref(db, 'gateway_data');
 		const gatewayStatusRef = ref(db, 'gateway_status');
+		const tempref = ref(db, 'gateway_status/last-ping');
 
 		onValue(boardDataRef, (snapshot) => {
 			const temp = snapshot.val();
@@ -104,32 +107,36 @@ export default function Home() {
 			setGatewayStatus(temp);
 			console.log('Gateway Status: ', gatewayStatus);
 		});
+
+		const interval = // Check the timestamp of the last update every 5 seconds
+			setInterval(() => {
+				const currentTime = Date.now();
+				let lastUpdate;
+
+				// Check the timestamp of the last update for gateway_status reference
+				onValue(tempref, (snapshot) => {
+					lastUpdate = snapshot.val();
+					console.log('lastUpdate: ', lastUpdate);
+					const tempdate = new Date(lastUpdate);
+					const timeSinceLastUpdate = currentTime - tempdate;
+
+					if (timeSinceLastUpdate > FIVE_SECONDS) {
+						setConn(false);
+						console.log(
+							'gateway_status has not been updated for the last 5 seconds.'
+						);
+					} else {
+						setConn(true);
+						console.log(
+							'gateway_status has been updated within the last 5 seconds.'
+						);
+					}
+				});
+			}, FIVE_SECONDS);
+
+		return () => clearInterval(interval);
 		// eslint-disable-next-line
 	}, []);
-
-	setInterval(() => {
-		isGateWayConnected();
-	}, 3000);
-
-	const isGateWayConnected = () => {
-		// if time.now() - gatewayStatus['last-ping'] > 10 seconds then false else true
-		const currDateTime = new Date();
-		const inputDate = gatewayStatus['last-ping'];
-		const lastPingDateTime = new Date(inputDate);
-		const diff = currDateTime - lastPingDateTime;
-		const diffSeconds = diff / 1000;
-		if (diffSeconds > 10) {
-			if (conn) {
-				setConn(false);
-			}
-			return false;
-		} else {
-			if (!conn) {
-				setConn(true);
-			}
-			return true;
-		}
-	};
 
 	return (
 		<>
