@@ -1,0 +1,31 @@
+.redLine {
+    height: 2px;
+    background-color: #F32013;
+    border: none;
+    transition: width 0.5s ease-in-out;
+}
+
+.greenLine {
+    height: 2px;
+    background-color: green;
+    border: none;
+    transition: width 0.5s ease-in-out;
+}
+
+.redMessage {
+    color: #F32013;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.greenMessage {
+    color: green;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+.imageContainer {
+    text-align: center;
+}

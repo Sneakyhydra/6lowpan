@@ -1,0 +1,33 @@
+.connected {
+    color: green;
+}
+
+.notConnected {
+    color: #F32013;
+}
+
+.boardContainer {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.msgSize {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.gridCol4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 0.5rem;
+}
+
+.gridItem {
+    text-align: center;
+    margin: 1rem;
+}
+
