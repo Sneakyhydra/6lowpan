@@ -28,6 +28,12 @@ const renderBoardData = (boardData, statusData) => {
 	return (
 		<div className={styles.gridCol4}>
 			<div className={styles.gridItem}>
+				<div className={styles.indivDataTitle}>IR Sensor</div>
+				<div className={styles.indivData}>
+					{statusData.connected != 0 ? (boardData['sensor'] ? "Object Detected" : "All Clear") : "All Clear"}
+				</div>
+			</div>
+			<div className={styles.gridItem}>
 				<div className={styles.indivDataTitle}>CPU Ontime</div>
 				<div className={styles.indivData}>
 					{statusData.connected != 0 ? boardData['cpu-on-time'] : 0}s
